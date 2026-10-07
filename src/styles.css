@@ -1,0 +1,821 @@
+@layer base { html, body { margin: 0; padding: 0; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } main > div { overflow: visible !important; } } ::-webkit-scrollbar { width: 8px; height: 8px; }
+
+
+  /* Cursor-reactive hero field: GPU-friendly, lightweight, and disabled on touch devices. */
+  .hero-cursor-reactive {
+    --cursor-x: 50%;
+    --cursor-y: 35%;
+    --cursor-glow-x: 50%;
+    --cursor-glow-y: 35%;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(520px circle at var(--cursor-x) var(--cursor-y), rgba(56, 189, 248, .115), transparent 66%),
+      radial-gradient(420px circle at calc(var(--cursor-x) + 12%) calc(var(--cursor-y) - 10%), rgba(129, 140, 248, .055), transparent 70%);
+  }
+
+  .hero-cursor-reactive > .hero-cursor-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-cursor-field::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 75% 80% at 50% 50%, transparent 25%, rgba(7,9,13,.32) 100%);
+  }
+
+  .hero-cursor-orb {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    left: 0;
+    top: 0;
+    border-radius: 999px;
+    transform: translate3d(calc(var(--cursor-glow-x) - 180px), calc(var(--cursor-glow-y) - 180px), 0);
+    background: radial-gradient(circle, rgba(56,189,248,.13) 0%, rgba(56,189,248,.055) 28%, rgba(129,140,248,.025) 52%, transparent 72%);
+    filter: blur(18px);
+    opacity: .9;
+    will-change: transform;
+  }
+
+  .hero-cursor-reactive .hero-cursor-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .hero-cursor-reactive {
+      --cursor-x: 50%;
+      --cursor-y: 35%;
+      background: radial-gradient(560px circle at 50% 30%, rgba(56,189,248,.075), transparent 70%);
+    }
+    .hero-cursor-orb { display: none; }
+  }
+
+  /* Premium brand lockup + theme system */
+  .brand-lockup { align-items: center; gap: .7rem; }
+  .brand-mark {
+    width: 38px; height: 38px; border-radius: 12px; flex: 0 0 auto;
+    display: grid; place-items: center;
+    font: 800 13px/1 "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -.04em;
+    color: #06131b;
+    background: linear-gradient(135deg, #8ed5ff 0%, #38bdf8 55%, #818cf8 100%);
+    box-shadow: 0 0 24px rgba(56,189,248,.18);
+  }
+  .brand-name { font: 800 17px/1.05 "Plus Jakarta Sans", sans-serif; letter-spacing: -.035em; white-space: nowrap; }
+  .brand-role { margin-top: 4px; }
+  .theme-toggle {
+    width: 38px; height: 38px; border-radius: 11px; flex: 0 0 auto;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.035); color: #bdc8d1;
+    transition: .2s ease; cursor: pointer;
+  }
+  .theme-toggle:hover { color: #8ed5ff; border-color: rgba(56,189,248,.25); transform: translateY(-1px); }
+  .theme-toggle .sun-icon { display:none; }
+  html.light .theme-toggle .moon-icon { display:none; }
+  html.light .theme-toggle .sun-icon { display:inline; }
+  .hero-cursor-field::after {
+    background: radial-gradient(ellipse 75% 80% at 50% 50%, transparent 25%, rgba(7,9,13,.18) 100%);
+  }
+  .hero-cursor-orb { background: radial-gradient(circle, rgba(56,189,248,.15) 0%, rgba(56,189,248,.06) 28%, rgba(129,140,248,.03) 52%, transparent 72%); }
+  @media (max-width: 1100px) { .brand-lockup { gap: .55rem; } .brand-mark { width:34px; height:34px; } .brand-name { font-size:15px; } }
+  @media (max-width: 640px) { .brand-role { display:none; } .brand-name { font-size:16px; } .brand-mark { width:34px; height:34px; border-radius:10px; } }
+  /* Light mode: same design language, brighter surfaces, restrained contrast */
+  html.light body { background:#f6f8fb !important; color:#101828 !important; }
+  html.light .bg-surface, html.light main { background:#f6f8fb !important; }
+  html.light .bg-surface-container-lowest { background:#ffffff !important; }
+  html.light .bg-surface-container-low { background:#eef2f7 !important; }
+  html.light .bg-surface-container { background:#e7edf4 !important; }
+  html.light .bg-surface-container-high { background:#dfe7ef !important; }
+  html.light .bg-surface-container-highest { background:#d7e0e9 !important; }
+  html.light .text-on-surface { color:#101828 !important; }
+  html.light .text-on-surface-variant { color:#526071 !important; }
+  html.light .text-outline { color:#667487 !important; }
+  html.light .text-primary { color:#0284c7 !important; }
+  html.light .text-secondary { color:#4f46e5 !important; }
+  html.light .text-tertiary { color:#059669 !important; }
+  html.light .bg-primary-container { background:#38bdf8 !important; }
+  html.light .text-on-primary-container { color:#052e3b !important; }
+  html.light header { background:rgba(255,255,255,.86) !important; box-shadow:0 1px 12px rgba(15,23,42,.07) !important; }
+  html.light .theme-toggle { background:#eef2f7; border-color:rgba(15,23,42,.09); color:#475569; }
+  html.light .brand-mark { box-shadow:0 0 22px rgba(14,165,233,.14); }
+  html.light .hero-cursor-reactive { background:radial-gradient(520px circle at var(--cursor-x) var(--cursor-y), rgba(14,165,233,.10), transparent 66%), radial-gradient(420px circle at calc(var(--cursor-x) + 12%) calc(var(--cursor-y) - 10%), rgba(99,102,241,.045), transparent 70%); }
+  html.light .hero-cursor-field::after { background:radial-gradient(ellipse 75% 80% at 50% 50%, transparent 25%, rgba(246,248,251,.15) 100%); }
+  html.light .hero-cursor-orb { background:radial-gradient(circle, rgba(14,165,233,.13) 0%, rgba(14,165,233,.05) 28%, rgba(99,102,241,.025) 52%, transparent 72%); }
+  html.light .border-outline-variant, html.light [class*="border-outline"] { border-color:rgba(15,23,42,.10) !important; }
+  html.light .shadow-2xl, html.light .shadow-xl { box-shadow:0 16px 45px rgba(15,23,42,.08) !important; }
+  html.light footer { background:#e9eef5 !important; }
+  .theme-aware-icon { font-size:19px !important; }
+  /* Header-only responsive stabilization: no layout changes elsewhere. */
+  header > div { min-width: 0; }
+  .brand-lockup { min-width: 0; }
+  .brand-lockup > .flex { min-width: 0; }
+  .brand-name, .brand-role, header nav a, header a[data-path="contact"] { white-space: nowrap; }
+  header nav { max-width: 100%; }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    header .brand-role { display: none; }
+  }
+  @media (max-width: 639px) {
+    header > div { padding-left: 1rem; padding-right: 1rem; }
+    .theme-toggle { width: 36px; height: 36px; }
+  }
+
+
+
+
+/* Header only: preserve original menu/layout; prevent overflow without redesigning it. */
+header > div { min-width: 0; }
+header > div > div, header > div > nav { min-width: 0; }
+header nav { flex-shrink: 1; }
+header nav a { white-space: nowrap; }
+header [data-path="contact"] { white-space: nowrap; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  header > div { gap: .5rem; }
+  header > div > div:first-child { gap: .5rem; }
+  header nav { gap: 0; padding: .25rem; }
+  header nav a { padding-left: .5rem; padding-right: .5rem; }
+  header > div > div:last-child { gap: .5rem; }
+  header > div > div:first-child > div { display: none; }
+  header [data-path="contact"] { padding-left: .75rem; padding-right: .75rem; }
+}
+@media (max-width: 639px) {
+  header > div { padding-left: 1rem; padding-right: 1rem; }
+  header > div > div:first-child > a { min-width: 0; }
+  header > div > div:first-child > a span:first-child { white-space: nowrap; }
+}
+
+
+
+/* Premium brand lockup — header/menu structure remains unchanged */
+.site-brand-name {
+  display: block;
+  white-space: nowrap;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-on-surface, #f8fafc);
+  transition: color .2s ease, transform .2s ease;
+}
+.site-brand-name:hover { color: #8ed5ff; }
+.site-brand-role {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
+  white-space: nowrap;
+  margin-top: .28rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .58rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: .055em;
+  color: rgba(255,255,255,.56);
+}
+ .site-brand-slash { color: #38bdf8; font-weight: 800; }
+html.light .site-brand-name { color: #0f172a !important; }
+html.light .site-brand-role { color: #526071 !important; }
+@media (min-width: 1280px) {
+  .site-brand-name { font-size: 1.12rem; }
+  .site-brand-role { font-size: .6rem; }
+}
+@media (max-width: 1023px) and (min-width: 768px) {
+  .site-brand-name { font-size: 1rem; }
+  .site-brand-role { font-size: .55rem; letter-spacing: .04em; }
+}
+@media (max-width: 639px) {
+  .site-brand-name { font-size: .98rem; }
+  .site-brand-role { font-size: .54rem; }
+}
+
+
+
+/* Mobile: keep the public landing view focused on header + hero only. */
+@media (max-width: 767px) {
+  main > div > section:not(#home),
+  footer {
+    display: none !important;
+  }
+
+  #home {
+    min-height: calc(100svh - 5rem);
+  }
+}
+
+/* Active navigation state: selected section stays visibly highlighted. */
+header nav a.nav-active {
+  background: var(--active-nav-bg, #21262D) !important;
+  color: var(--active-nav-text, #38BDF8) !important;
+  font-weight: 600 !important;
+  box-shadow: inset 0 0 0 1px rgba(56,189,248,.16);
+}
+html.light header nav a.nav-active {
+  --active-nav-bg: #e2e8f0;
+  --active-nav-text: #0284C7;
+  box-shadow: inset 0 0 0 1px rgba(2,132,199,.14);
+}
+
+
+.project-preview-responsive picture,
+.project-preview-responsive img { display:block; width:100%; height:100%; }
+.project-preview-responsive img { object-position: top center !important; }
+
+
+
+header nav a{position:relative;transition:color .2s ease,background-color .2s ease,transform .2s ease}
+header nav a:hover{color:#38BDF8!important;background:rgba(56,189,248,.08);border-radius:8px}
+header nav a::after{content:"";position:absolute;left:50%;bottom:3px;width:0;height:2px;border-radius:999px;background:#38BDF8;transform:translateX(-50%);transition:width .2s ease}
+header nav a:hover::after{width:calc(100% - 16px)}
+header nav a.active{color:#38BDF8!important;background:rgba(56,189,248,.10);border-radius:8px}
+header nav a.active::after{width:calc(100% - 16px)}
+header nav a:focus-visible{outline:2px solid #38BDF8;outline-offset:2px}
+
+/* =========================================================
+   Responsive system — preserve the existing visual design.
+   Rule: every viewport keeps exactly 20px horizontal page space.
+   ========================================================= */
+
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Keep the document itself scrollable. Do not force a separate/visible overflow context. */
+html {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100%;
+}
+
+body {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  height: auto;
+  overflow: visible !important;
+}
+
+.max-w-7xl {
+  max-width: none !important;
+}
+
+.px-margin-mobile,
+.lg\\:px-margin,
+.px-margin {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.site-header-inner {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.site-header-left,
+.site-header-actions,
+.desktop-nav {
+  min-width: 0;
+}
+
+.site-brand-name {
+  font-size: 1.02rem;
+}
+
+.site-availability {
+  max-width: 245px;
+}
+
+.site-availability .text-label-caps {
+  font-size: .72rem;
+  line-height: 1.25;
+}
+
+
+/* Header brand logo */
+.site-logo-link {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 165px;
+  height: 54px;
+  overflow: hidden;
+}
+
+.site-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .site-logo-link {
+    width: 145px !important;
+    height: 50px !important;
+  }
+}
+
+/* Desktop: original navigation remains the primary navigation. */
+.desktop-nav {
+  flex-shrink: 1;
+  white-space: nowrap;
+}
+
+.desktop-nav a {
+  white-space: nowrap;
+}
+
+.mobile-menu-toggle,
+.mobile-nav {
+  display: none;
+}
+
+/* Tablet + mobile: use the same menu instead of squeezing desktop nav. */
+@media (max-width: 1023px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.035);
+    color: #bdc8d1;
+    cursor: pointer;
+    transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+  }
+
+  .mobile-menu-toggle:hover,
+  .mobile-menu-toggle:focus-visible {
+    color: #38BDF8;
+    background: rgba(56,189,248,.08);
+    border-color: rgba(56,189,248,.25);
+    outline: none;
+  }
+
+  .mobile-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px;
+    background: rgba(12,14,18,.97);
+    box-shadow: 0 18px 45px rgba(0,0,0,.28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  }
+
+  .mobile-nav.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .mobile-nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 9px 12px;
+    border-radius: 9px;
+    color: #bdc8d1;
+    font-family: "Inter", sans-serif;
+    font-size: .92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .18s ease, background-color .18s ease;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav a:focus-visible {
+    color: #38BDF8;
+    background: rgba(56,189,248,.08);
+    outline: none;
+  }
+
+  .mobile-nav a.nav-active {
+    color: #38BDF8 !important;
+    background: rgba(56,189,248,.10) !important;
+    box-shadow: inset 0 0 0 1px rgba(56,189,248,.14);
+  }
+
+  .site-availability .text-label-caps {
+    font-size: .68rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header-inner {
+    height: 68px !important;
+    gap: 8px !important;
+  }
+
+  .site-brand-name {
+    font-size: .96rem;
+  }
+
+  .site-availability {
+    display: none !important;
+  }
+
+  .header-cta {
+    display: none !important;
+  }
+
+  .site-header-actions {
+    gap: 7px !important;
+  }
+
+  .mobile-menu-toggle,
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mobile-nav {
+    top: calc(100% + 6px);
+  }
+
+  main.pt-20 {
+    padding-top: 68px !important;
+  }
+
+  /* Mobile typography: scale the existing design instead of simply wrapping desktop text. */
+  #home {
+    padding-top: 28px !important;
+    padding-bottom: 48px !important;
+  }
+
+  #home .hero-cursor-content {
+    gap: 28px !important;
+  }
+
+  #home h1 {
+    font-size: 1.35rem !important;
+    line-height: 1.35 !important;
+    letter-spacing: -.025em !important;
+  }
+
+  #home .font-label-code {
+    font-size: .78rem !important;
+    line-height: 1.7 !important;
+    letter-spacing: .16em !important;
+    flex-wrap: wrap;
+  }
+
+  #home .font-body-lg {
+    font-size: .98rem !important;
+    line-height: 1.65 !important;
+  }
+
+  #home .inline-flex.items-center.justify-center.whitespace-nowrap {
+    min-height: 52px;
+    padding: 12px 18px !important;
+    font-size: .92rem !important;
+  }
+
+  #home .grid.grid-cols-3 {
+    width: 100%;
+    max-width: none !important;
+    gap: 8px !important;
+  }
+
+  #home .grid.grid-cols-3 > div {
+    min-width: 0;
+    padding: 10px 8px !important;
+  }
+
+  #home .grid.grid-cols-3 .text-headline-md {
+    font-size: 1rem !important;
+  }
+
+  #home .grid.grid-cols-3 .text-label-caps {
+    font-size: .66rem !important;
+    line-height: 1.55 !important;
+    letter-spacing: .08em !important;
+  }
+
+  /* Project browser/address bars must stay inside the card. */
+  .project-browser-bar {
+    min-width: 0 !important;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .project-browser-bar > div:nth-child(2) {
+    min-width: 0 !important;
+    max-width: 100%;
+    flex: 1 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .project-browser-bar > div:nth-child(2) .text-label-code {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .project-preview-responsive {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .project-preview-responsive picture,
+  .project-preview-responsive img {
+    max-width: 100%;
+  }
+
+  /* Do not hide the rest of the portfolio on mobile. */
+  main > div > section:not(#home),
+  footer {
+    display: block !important;
+  }
+
+  main > div > section {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+
+  footer > div {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .site-header-inner {
+    height: 72px !important;
+  }
+
+  .site-brand-name {
+    font-size: 1rem;
+  }
+
+  .site-availability .text-label-caps {
+    font-size: .66rem;
+  }
+
+  .header-cta {
+    font-size: .82rem !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    white-space: nowrap;
+  }
+
+  main.pt-20 {
+    padding-top: 72px !important;
+  }
+
+  main > div > section {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+
+  #home {
+    padding-top: 42px !important;
+    padding-bottom: 60px !important;
+  }
+
+  #home h1 {
+    font-size: clamp(1.7rem, 3vw, 2.35rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  #home .font-body-lg {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+  }
+}
+
+
+/* 1024px header fit: keep the desktop header, but scale spacing/type so nothing overlaps. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .site-header-inner {
+    gap: 8px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .site-header-left {
+    gap: 8px !important;
+    flex: 0 1 auto;
+  }
+
+  .site-brand-name {
+    font-size: .92rem !important;
+  }
+
+  .site-availability {
+    max-width: 126px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    gap: 5px !important;
+  }
+
+  .site-availability .text-label-caps {
+    font-size: .56rem !important;
+    line-height: 1 !important;
+    letter-spacing: .07em !important;
+    white-space: nowrap;
+  }
+
+  .desktop-nav {
+    gap: 0 !important;
+    padding: 3px !important;
+    flex: 0 1 auto;
+  }
+
+  .desktop-nav a {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    font-size: .82rem !important;
+  }
+
+  .site-header-actions {
+    gap: 6px !important;
+  }
+
+  .header-cta {
+    font-size: .72rem !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .theme-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px;
+  }
+}
+
+/* 1024px–1279px header fit: keep desktop navigation, but compact it so every item fits cleanly. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-header-inner {
+    height: 72px !important;
+    gap: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .site-header-left {
+    gap: 7px !important;
+    flex: 0 1 auto;
+  }
+
+  .site-logo-link {
+    width: 130px !important;
+    height: 46px !important;
+  }
+
+  .site-availability {
+    max-width: 118px !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+    gap: 4px !important;
+  }
+
+  .site-availability .text-label-caps {
+    font-size: .52rem !important;
+    line-height: 1 !important;
+    letter-spacing: .055em !important;
+    white-space: nowrap;
+  }
+
+  .desktop-nav {
+    gap: 0 !important;
+    padding: 3px !important;
+    flex: 0 1 auto;
+  }
+
+  .desktop-nav a {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    font-size: .76rem !important;
+  }
+
+  .site-header-actions {
+    gap: 5px !important;
+  }
+
+  .header-cta {
+    font-size: .68rem !important;
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .theme-toggle {
+    width: 34px !important;
+    height: 34px !important;
+    flex: 0 0 34px;
+  }
+}
+
+/* Wide desktop: use the full viewport while retaining the fixed 20px page edge. */
+@media (min-width: 1280px) {
+  main > div > section,
+  footer > div {
+    max-width: none !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Light theme navigation/menu states. */
+html.light .mobile-menu-toggle {
+  background: #eef2f7;
+  border-color: rgba(15,23,42,.09);
+  color: #475569;
+}
+
+html.light .mobile-nav {
+  background: rgba(255,255,255,.98);
+  border-color: rgba(15,23,42,.09);
+  box-shadow: 0 18px 45px rgba(15,23,42,.12);
+}
+
+html.light .mobile-nav a {
+  color: #526071;
+}
+
+html.light .mobile-nav a:hover,
+html.light .mobile-nav a:focus-visible {
+  color: #0284C7;
+  background: rgba(2,132,199,.08);
+}
+
+html.light .mobile-nav a.nav-active {
+  color: #0284C7 !important;
+  background: #e2e8f0 !important;
+  box-shadow: inset 0 0 0 1px rgba(2,132,199,.14);
+}
+
+/* Navigation hover/active must react on the first click, not after repeated clicks. */
+.desktop-nav a,
+.mobile-nav a {
+  position: relative;
+  transition: color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.desktop-nav a:hover {
+  color: #38BDF8 !important;
+  background: rgba(56,189,248,.08) !important;
+}
+
+.desktop-nav a.nav-active {
+  color: #38BDF8 !important;
+  background: rgba(56,189,248,.10) !important;
+  font-weight: 600 !important;
+  box-shadow: inset 0 0 0 1px rgba(56,189,248,.14);
+}
+
+html.light .desktop-nav a:hover,
+html.light .desktop-nav a.nav-active {
+  color: #0284C7 !important;
+}
+
+html.light .desktop-nav a.nav-active {
+  background: #e2e8f0 !important;
+  box-shadow: inset 0 0 0 1px rgba(2,132,199,.14);
+}
